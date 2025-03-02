@@ -1,0 +1,109 @@
+networks:
+  iternal-rmp:
+    name: iternal-rmp
+  exposed-rmp:
+    name: exposed-rmp
+services:
+  # -----------   JVM   ------------ #
+  tm:
+    build: ./jvm
+    volumes:
+      - ./jvm/dist:/opt/application
+      - ./jvm/home:/home
+    networks:
+      - iternal-rmp
+      - exposed-rmp
+    depends_on:
+      - redis
+    restart: always
+    entrypoint: /bin/bash /home/tm.sh
+  api:
+    build: ./jvm
+    volumes:
+      - ./jvm/dist:/opt/application
+      - ./jvm/home:/home
+    networks:
+      - iternal-rmp
+      - exposed-rmp
+    depends_on:
+      - redis
+    restart: always
+    entrypoint: /bin/bash /home/api.sh
+  user:
+    build: ./jvm
+    volumes:
+      - ./jvm/dist:/opt/application
+      - ./jvm/home:/home
+    networks:
+      - iternal-rmp
+      - exposed-rmp
+    depends_on:
+      - redis
+    restart: always
+    entrypoint: /bin/bash /home/user.sh
+  # ----------- / JVM / ------------ #
+
+
+
+  # -----------  Data  ------------- #
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - iternal-rmp
+  pg:
+    build: ./postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: my-secret-pw
+      # PGOPTIONS: "-c max_connections=200"
+    volumes:
+      - ./postgres/home:/home
+      - ./postgres/root:/root
+      - ./postgres/init.d:/docker-entrypoint-initdb.d
+    networks:
+      - iternal-rmp
+    ports:
+      - "5432:5432"
+  # ---------- / Data / ------------ #
+  
+
+  # ---------  Monitors  ----------- #
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    volumes:
+      - ./prometheus:/etc/prometheus/
+      - ./prometheus/home:/home
+    networks:
+      - iternal-rmp
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+     - 3000:30001
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+    networks:
+      - iternal-rmp
+    depends_on:
+      - prometheus
+  # -------- / Monitors / ---------- #
+
+
+
+  # -----------  Utils  ------------ #
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/home:/home
+    networks:
+      - exposed-rmp
+    depends_on:
+      - api
+    entrypoint: /bin/bash /home/startup.sh

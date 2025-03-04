@@ -41,6 +41,18 @@ services:
       - redis
     restart: always
     entrypoint: /bin/bash /home/user.sh
+  logger:
+    build: ./jvm
+    volumes:
+      - ./jvm/dist:/opt/application
+      - ./jvm/home:/home
+    networks:
+      - iternal-rmp
+      - exposed-rmp
+    depends_on:
+      - clickhouse
+    restart: always
+    entrypoint: /bin/bash /home/logger.sh
   # ----------- / JVM / ------------ #
 
 

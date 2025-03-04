@@ -67,6 +67,23 @@ services:
       - iternal-rmp
     ports:
       - "5432:5432"
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    restart: always
+    volumes:
+      - ./clickhouse/data:/var/lib/clickhouse/
+      - ./clickhouse/log:/var/log/clickhouse-server/
+      - ./clickhouse/config.d:/etc/clickhouse-server/config.d/
+      - ./clickhouse/init.d:/docker-entrypoint-initdb.d
+    environment:
+      - CLICKHOUSE_USER=clickhouse
+      - CLICKHOUSE_PASSWORD=my-secret-pw
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+    networks:
+      - iternal-rmp
   # ---------- / Data / ------------ #
   
 

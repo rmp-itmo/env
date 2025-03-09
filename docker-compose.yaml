@@ -1,3 +1,4 @@
+name: rmp
 networks:
   iternal-rmp:
     name: iternal-rmp
@@ -25,6 +26,8 @@ services:
     networks:
       - iternal-rmp
       - exposed-rmp
+    ports:
+      - "8080:8000"
     depends_on:
       - redis
     restart: always
@@ -50,9 +53,22 @@ services:
       - iternal-rmp
       - exposed-rmp
     depends_on:
+      - redis
       - clickhouse
     restart: always
     entrypoint: /bin/bash /home/logger.sh
+  auth:
+    build: ./jvm
+    volumes:
+      - ./jvm/dist:/opt/application
+      - ./jvm/home:/home
+    networks:
+      - iternal-rmp
+      - exposed-rmp
+    depends_on:
+      - redis
+    restart: always
+    entrypoint: /bin/bash /home/auth.sh
   # ----------- / JVM / ------------ #
 
 

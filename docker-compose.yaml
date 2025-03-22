@@ -26,8 +26,8 @@ services:
     networks:
       - iternal-rmp
       - exposed-rmp
-    ports:
-      - "8080:8000"
+    # ports:
+    #   - "8080:8000"
     depends_on:
       - redis
     restart: always
@@ -89,8 +89,8 @@ services:
   redis:
     image: redis:alpine
     restart: always
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
     networks:
       - iternal-rmp
   pg:
@@ -105,8 +105,8 @@ services:
       - ./postgres/init.d:/docker-entrypoint-initdb.d
     networks:
       - iternal-rmp
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
   clickhouse:
     image: clickhouse/clickhouse-server
     restart: always
@@ -154,8 +154,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - "8045:80"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/home:/home

@@ -1,6 +1,7 @@
 git pull
 
 cd ../
+git pull
 gradle build
 
 cd docker

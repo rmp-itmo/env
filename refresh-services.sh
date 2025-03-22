@@ -2,7 +2,7 @@ git pull
 
 cd ../
 git pull
-gradle build
+./gradlew build
 
 cd docker
 
@@ -14,4 +14,4 @@ for SERVICE in $SERVICES; do
 done
 
 echo "Up"
-docker compose up -d 
+docker compose up -d

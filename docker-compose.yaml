@@ -119,9 +119,9 @@ services:
       - CLICKHOUSE_USER=clickhouse
       - CLICKHOUSE_PASSWORD=my-secret-pw
       - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
-    ports:
-      - "9000:9000"
-      - "8123:8123"
+    # ports:
+    #   - "9000:9000"
+    #   - "8123:8123"
     networks:
       - iternal-rmp
   # ---------- / Data / ------------ #
@@ -138,8 +138,8 @@ services:
       - iternal-rmp
   grafana:
     image: grafana/grafana:latest
-    ports:
-     - 3000:30001
+    # ports:
+    #  - 3000:30001
     volumes:
       - ./grafana/data:/var/lib/grafana
     networks:

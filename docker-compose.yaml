@@ -6,7 +6,7 @@ networks:
     name: exposed-rmp
 services:
   # -----------   JVM   ------------ #
-  tm:
+  tm-service:
     build: ./jvm
     volumes:
       - ./jvm/dist:/opt/application
@@ -18,7 +18,7 @@ services:
       - redis
     restart: always
     entrypoint: /bin/bash /home/tm.sh
-  api:
+  api-service:
     build: ./jvm
     volumes:
       - ./jvm/dist:/opt/application
@@ -32,7 +32,7 @@ services:
       - redis
     restart: always
     entrypoint: /bin/bash /home/api.sh
-  user:
+  user-service:
     build: ./jvm
     volumes:
       - ./jvm/dist:/opt/application
@@ -44,7 +44,7 @@ services:
       - redis
     restart: always
     entrypoint: /bin/bash /home/user.sh
-  logger:
+  logger-service:
     build: ./jvm
     volumes:
       - ./jvm/dist:/opt/application
@@ -57,7 +57,7 @@ services:
       - clickhouse
     restart: always
     entrypoint: /bin/bash /home/logger.sh
-  auth:
+  auth-service:
     build: ./jvm
     volumes:
       - ./jvm/dist:/opt/application
@@ -69,7 +69,7 @@ services:
       - redis
     restart: always
     entrypoint: /bin/bash /home/auth.sh
-  diet:
+  diet-service:
     build: ./jvm
     volumes:
       - ./jvm/dist:/opt/application
@@ -162,5 +162,5 @@ services:
     networks:
       - exposed-rmp
     depends_on:
-      - api
+      - api-service
     entrypoint: /bin/bash /home/startup.sh

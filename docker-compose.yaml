@@ -93,7 +93,20 @@ services:
       - redis
     restart: always
     entrypoint: /bin/bash /home/stat.sh
-  # ----------- / JVM / ------------ #
+  forum-service:
+    build: ./jvm
+    volumes:
+      - ./jvm/dist:/opt/application
+      - ./jvm/home:/home
+    networks:
+      - iternal-rmp
+      - exposed-rmp
+    depends_on:
+      - redis
+    restart: always
+    entrypoint: /bin/bash /home/forum.sh
+ 
+ # ----------- / JVM / ------------ #
 
 
 

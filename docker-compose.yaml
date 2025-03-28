@@ -81,6 +81,18 @@ services:
       - redis
     restart: always
     entrypoint: /bin/bash /home/diet.sh
+  stat-service:
+    build: ./jvm
+    volumes:
+      - ./jvm/dist:/opt/application
+      - ./jvm/home:/home
+    networks:
+      - iternal-rmp
+      - exposed-rmp
+    depends_on:
+      - redis
+    restart: always
+    entrypoint: /bin/bash /home/stat.sh
   # ----------- / JVM / ------------ #
 
 

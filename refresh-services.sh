@@ -15,3 +15,5 @@ done
 
 echo "Up"
 docker compose up -d
+
+docker compose restart nginx

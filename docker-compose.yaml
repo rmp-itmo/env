@@ -175,12 +175,13 @@ services:
       - iternal-rmp
   grafana:
     image: grafana/grafana:latest
-    # ports:
-    #  - 3000:30001
+    ports:
+      - 8046:3000
     volumes:
       - ./grafana/data:/var/lib/grafana
     networks:
       - iternal-rmp
+      - exposed-rmp
     depends_on:
       - prometheus
   # -------- / Monitors / ---------- #

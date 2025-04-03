@@ -1,16 +1,16 @@
 scrape_configs:
   # Example job with dynamicly changed endpoints (for example every run is on different port)
-  - job_name: 'Job '
-    metrics_path: /api/open/metrics
-    scrape_interval: 5s
-  # Json file with target data (can be dynamicly changed)
-    file_sd_configs:
-      - files:
-          - TestService.json
+  # - job_name: 'Job '
+  #   metrics_path: /api/open/metrics
+  #   scrape_interval: 5s
+  # # Json file with target data (can be dynamicly changed)
+  #   file_sd_configs:
+  #     - files:
+  #         - TestService.json
 
   # Example job with static target config 
-  - job_name: 'Gateway'
-    metrics_path: /api/open/metrics
+  - job_name: 'Metrics'
+    metrics_path: /metrics-micrometer
     scrape_interval: 5s
     static_configs:
-      - targets: ['host.docker.internal']
+      - targets: ['tm-service:8080', 'api-service:8080', 'user-service:8080', 'auth-service:8080', 'diet-service:8080', 'stat-service:8080', 'forum-service:8080', 'paprika-service:8080']
